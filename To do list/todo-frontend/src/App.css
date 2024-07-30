@@ -1,0 +1,26 @@
+body {
+  background-image: url('./background.jpg');
+  background-size: cover;
+  background-position: center;
+  font-family: Arial, sans-serif;
+}
+
+.App {
+  text-align: center;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 600px;
+  margin: 50px auto;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+input[type="text"], button {
+  margin: 10px;
+}
+
+footer {
+  margin-top: 20px;
+  font-size: 0.9em;
+  color: #666;
+}
