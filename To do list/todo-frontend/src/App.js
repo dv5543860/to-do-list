@@ -4,16 +4,21 @@ import TaskList from './components/TaskList';
 import TaskForm from './components/TaskForm';
 import './App.css';
 
+const API_URL = 'https://to-do-list-mfvj.onrender.com';
 
-  const App = () => {
-    const [tasks, setTasks] = useState([]);
-    const [search, setSearch] = useState('');
-    const [taskToEdit, setTaskToEdit] = useState(null);
+const App = () => {
+  const [tasks, setTasks] = useState([]);
+  const [search, setSearch] = useState('');
+  const [taskToEdit, setTaskToEdit] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
-      const result = await axios.get('http://localhost:5000/tasks');
-      setTasks(result.data);
+      try {
+        const result = await axios.get(`${API_URL}/tasks`);
+        setTasks(result.data);
+      } catch (error) {
+        console.error('Error fetching tasks:', error);
+      }
     };
     fetchData();
   }, []);
@@ -24,22 +29,31 @@ import './App.css';
     setSearch(searchQuery);
   }, []);
 
-
-
   const addTask = async (task) => {
-    const result = await axios.post('http://localhost:5000/tasks', task);
-    setTasks([...tasks, result.data]);
+    try {
+      const result = await axios.post(`${API_URL}/tasks`, task);
+      setTasks([...tasks, result.data]);
+    } catch (error) {
+      console.error('Error adding task:', error);
+    }
   };
 
   const updateTask = async (updatedTask) => {
-    const result = await axios.put(`http://localhost:5000/tasks/${updatedTask.id}`, updatedTask);
-    setTasks(tasks.map(task => task.id === updatedTask.id ? result.data : task));
-
+    try {
+      const result = await axios.put(`${API_URL}/tasks/${updatedTask.id}`, updatedTask);
+      setTasks(tasks.map(task => task.id === updatedTask.id ? result.data : task));
+    } catch (error) {
+      console.error('Error updating task:', error);
+    }
   };
 
   const deleteTask = async (taskId) => {
-    await axios.delete(`http://localhost:5000/tasks/${taskId}`);
-    setTasks(tasks.filter(task => task.id !== taskId));
+    try {
+      await axios.delete(`${API_URL}/tasks/${taskId}`);
+      setTasks(tasks.filter(task => task.id !== taskId));
+    } catch (error) {
+      console.error('Error deleting task:', error);
+    }
   };
 
   const searchTasks = (query) => {
@@ -49,12 +63,14 @@ import './App.css';
     window.history.replaceState(null, null, '?' + queryParams.toString());
   };
 
-
   const editTask = async (updatedTask) => {
-    const result = await axios.put(`http://localhost:5000/tasks/${updatedTask.id}`, updatedTask);
-    setTasks(tasks.map(task => task.id === updatedTask.id ? result.data : task));
+    try {
+      const result = await axios.put(`${API_URL}/tasks/${updatedTask.id}`, updatedTask);
+      setTasks(tasks.map(task => task.id === updatedTask.id ? result.data : task));
+    } catch (error) {
+      console.error('Error editing task:', error);
+    }
   };
-
 
   const filteredTasks = tasks.filter(task => task.task.toLowerCase().includes(search.toLowerCase()));
 
@@ -69,7 +85,3 @@ import './App.css';
 };
 
 export default App;
-
-
-
-
